@@ -138,6 +138,18 @@
                         .draw();
                 });
 
+                $(selector + "_wrapper" + " .individual_filtering.number_range" + " input").on("keyup change", function(event) {
+                    var rangeWidget = $(event.currentTarget).closest('.number_range');
+                    var searchFieldId = rangeWidget.data('filter-property-id');
+                    var searchMin = rangeWidget.find('.number_range_min').val();
+                    var searchMax = rangeWidget.find('.number_range_max').val();
+                    var searchValue = (searchMin ? searchMin.toString() : '') + ',' + (searchMax ? searchMax.toString() : '');
+                    oTable
+                        .column(searchFieldId)
+                        .search(searchValue)
+                        .draw();
+                });
+
             {% endif %}
 
             {% if view_multiselect %}

@@ -1,0 +1,48 @@
+{##
+ # This file is part of the SgDatatablesBundle package.
+ #
+ # (c) stwe <https://github.com/stwe/DatatablesBundle>
+ #
+ # For the full copyright and license information, please view the LICENSE
+ # file that was distributed with this source code.
+ #}
+{% extends 'SgDatatablesBundle:Filters:filter.html.twig' %}
+
+{% set cancel_button_js %}
+    <script>
+        $("#{{ tableId }}-sg-filter-cancel-button-{{ selectorId }}").click(function() {
+            var searchMinField = $("#{{ tableId }}-sg-filter-{{ selectorId }} .number_range_min");
+            var searchMaxField = $("#{{ tableId }}-sg-filter-{{ selectorId }} .number_range_max");
+            if ('' != searchMinField.val() || '' != searchMaxField.val()) {
+                searchMinField
+                    .val('');
+                searchMaxField
+                    .val('')
+                    .change();
+            }
+        });
+    </script>
+{% endset %}
+
+{% block html %}
+    <div id="{{ tableId }}-sg-filter-{{ selectorId }}"
+         class="individual_filtering number_range{% if column.filter.class %} {{ column.filter.class }}{% endif %}"
+         style="{% if column.width %} width:{{ column.width }};{% endif %}"
+         data-filter-property-id="{{ filterColumnId }}">
+        <input type="text"
+            class="number_range_min"
+            placeholder="{{ column.filter.minPlaceholder|striptags|trim }}" />
+        <input type="text"
+            class="number_range_max"
+            placeholder="{{ column.filter.maxPlaceholder|striptags|trim }}" />
+    </div>
+    {% if true == column.filter.cancelButton %}
+        {{ cancel_button_html }}
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+    {% if true == column.filter.cancelButton %}
+        {{ cancel_button_js }}
+    {% endif %}
+{% endblock %}
